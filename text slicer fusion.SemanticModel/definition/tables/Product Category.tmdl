@@ -1,0 +1,65 @@
+table 'Product Category'
+	lineageTag: 725b18cc-e6d2-4020-922e-aa484fdee01c
+
+	column ProductCategoryKey
+		dataType: int64
+		isNullable: false
+		lineageTag: 81ef92e9-2bcb-411d-b447-a03bb10f7b9f
+		summarizeBy: none
+		sourceColumn: ProductCategoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Category Code'
+		dataType: string
+		lineageTag: aedb114b-3e10-4d76-8199-83a8e9abe90e
+		summarizeBy: none
+		sourceColumn: Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Category
+		dataType: string
+		lineageTag: ff5a6b41-8b36-47ce-aded-e82fd531292b
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition 'DaxBook Product Category' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("Demo", "ContosoRetailDW"),
+				    #"DaxBook_Product Category" = Source{[Schema="DaxBook",Item="Product Category"]}[Data]
+				in
+				    #"DaxBook_Product Category"
+
+		annotation IsQueryEditorUsed = False
+
+		annotation QueryEditorSerialization
+
+		annotation TableWidgetSerialization
+
+	annotation _TM_ExtProp_QueryDefinition = SELECT * FROM [Product Category]
+
+	annotation _TM_ExtProp_DbTableName = 704
+
+	annotation IsQueryEditorUsed = False
+
+	annotation QueryEditorSerialization
+
+	annotation TableWidgetSerialization
+
+	annotation DataMarketWebBaseUrl
+
+	annotation DataMarketWebQueryUrl
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "report": {
+        "path": "text slicer fusion.Report"
+      }
+    }
+  ],
+  "settings": {
+    "enableAutoRecovery": false
+  }
+}

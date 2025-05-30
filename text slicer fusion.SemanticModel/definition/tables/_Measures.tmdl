@@ -1,0 +1,76 @@
+table _Measures
+	lineageTag: 9bf45c34-283b-4899-be64-ec99e18fca95
+
+	measure 'Selected Brand' =
+			
+			var _selected_brand = HASONEFILTER('Product'[Brand])
+			var _brand_result = IF(_selected_brand, SELECTEDVALUE('Product'[Brand]), "Channel: Invalid Entry. Please Retry!")
+			RETURN
+			_brand_result
+		lineageTag: 3eeaf96f-3463-4d6d-a6d6-413df299b82b
+
+	measure 'Selected Country' =
+			
+			var _selected_country = HASONEFILTER(Store[Country])
+			var _country_result = IF(_selected_country, SELECTEDVALUE(Store[Country]), "Channel: Invalid Entry. Please Retry!")
+			RETURN
+			_country_result
+		lineageTag: c4c4bd36-209e-4b7d-a82a-e9717630c1e7
+
+	measure 'Message Title' = ```
+			
+			var _foundbrand = ISFILTERED('Product'[Brand])
+			var _foundcountry = ISFILTERED(Store[Country])
+			var _bothfound = AND(_foundbrand, _foundcountry)
+			var _hassales = NOT(ISEMPTY(Sales))
+			var _allfound = AND(_bothfound, _hassales)
+			var _return =
+			SWITCH(
+			    TRUE(), 
+			    _allfound, "Both entrues are valid. See results below:",
+			    _bothfound, "Two valid values entered, but the combination is incorrect. Please check brand and country entries",
+			    "Please ensure that values are entered for both slicers.")
+			RETURN
+			_return
+			```
+		lineageTag: 9279723c-c49e-43e7-b2a4-dad511901ebc
+
+	measure 'Sales with Filter' = ```
+			
+			CALCULATE(
+			    Sales[Sales Amount],
+			    'Product'[Brand] = SELECTEDVALUE('Product'[Brand]),
+			    Store[Country] = SELECTEDVALUE(Store[Country])
+			)
+			
+			
+			/*
+			sales with filter = 
+			 var _selectedbrand = TREATAS({SELECTEDVALUE('Product'[Brand])}, 'Product'[Brand]) 
+			 var _selectedcountry = TREATAS({SELECTEDVALUE(Store[Country])}, Store[Country])
+			var _return = CALCULATE(Sales[Sales Amount], _selectedbrand, _selectedcountry)
+			RETURN
+			_return
+			*/
+			```
+		lineageTag: 4b724991-c518-4eee-9e8e-794cadb14dd3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: f6cacde3-cfef-4541-add3-0cdc277f3cf6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 333044faa03643fc9275306eb697a9fb
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

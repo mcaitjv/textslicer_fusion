@@ -1,0 +1,352 @@
+table Date
+	lineageTag: 5598f0be-45e6-40a6-88b7-ba0e3812bece
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		isNullable: false
+		formatString: General Date
+		lineageTag: 5e7da9f4-fcbe-4208-8e21-f0b1720fe1d8
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		isHidden
+		isNullable: false
+		lineageTag: 10e18c1a-d775-4eef-b4ad-e5dca5c4ce2e
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Calendar Year Number'
+		dataType: int64
+		isHidden
+		lineageTag: c1a8fdcd-c387-4078-be36-d07433c26b31
+		summarizeBy: none
+		sourceColumn: Calendar Year Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Calendar Year'
+		dataType: string
+		isHidden
+		lineageTag: 9fbe8da5-001c-431c-b80a-ca232751567c
+		summarizeBy: none
+		sourceColumn: Calendar Year
+		sortByColumn: 'Calendar Year Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Calendar Year Quarter Number'
+		dataType: int64
+		isHidden
+		lineageTag: 8db92869-b589-4b12-ac6e-734196070b84
+		summarizeBy: none
+		sourceColumn: Calendar Year Quarter Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Calendar Year Quarter'
+		dataType: string
+		isHidden
+		lineageTag: 1a9a5e60-2e7e-42ee-ae2f-8a145b1108a8
+		summarizeBy: none
+		sourceColumn: Calendar Year Quarter
+		sortByColumn: 'Calendar Year Quarter Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Calendar Year Month Number'
+		dataType: int64
+		isHidden
+		lineageTag: 796ce331-8f1c-4d0b-a7c1-e371c2a64ba7
+		summarizeBy: none
+		sourceColumn: Calendar Year Month Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Calendar Year Month'
+		dataType: string
+		isHidden
+		lineageTag: ae42c696-05f3-4df7-aab7-dbc375e7145c
+		summarizeBy: none
+		sourceColumn: Calendar Year Month
+		sortByColumn: 'Calendar Year Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Month Number'
+		dataType: int64
+		isHidden
+		lineageTag: 13f281cf-48a2-4772-b88e-fc18dc07f55b
+		summarizeBy: none
+		sourceColumn: Month Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month
+		dataType: string
+		lineageTag: 20c297f3-2f5f-4a11-85ae-656dc622afff
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Day of Week Number'
+		dataType: int64
+		isHidden
+		lineageTag: ffdd17ed-b3e4-4981-90e0-2d412c0e9c88
+		summarizeBy: none
+		sourceColumn: Day of Week Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Day of Week'
+		dataType: string
+		lineageTag: 72742562-bdcf-4e53-830e-066ebe44bff0
+		summarizeBy: none
+		sourceColumn: Day of Week
+		sortByColumn: 'Day of Week Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Fiscal Year Number'
+		dataType: int64
+		isHidden
+		lineageTag: f83a9df0-98e2-4778-90cd-67b2f9306d72
+		summarizeBy: none
+		sourceColumn: Fiscal Year Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Fiscal Year'
+		dataType: string
+		isHidden
+		lineageTag: 1cb412f5-e0e0-4763-bece-3ce659e5adaa
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+		sortByColumn: 'Fiscal Year Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Fiscal Quarter Number'
+		dataType: int64
+		isHidden
+		lineageTag: 54c32bfd-2404-444d-bb2f-9399f57b2580
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Fiscal Quarter'
+		dataType: string
+		lineageTag: 621b35d6-eb0b-4ed6-8547-a491eb3a7c03
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+		sortByColumn: 'Fiscal Quarter Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Fiscal Year Quarter Number'
+		dataType: int64
+		isHidden
+		lineageTag: 98e0304f-637a-4d4f-9822-cb622a7d0def
+		summarizeBy: none
+		sourceColumn: Fiscal Year Quarter Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Fiscal Year Quarter'
+		dataType: string
+		isHidden
+		lineageTag: 5d4e5ea1-45cb-46dc-ab63-15cf2954e834
+		summarizeBy: none
+		sourceColumn: Fiscal Year Quarter
+		sortByColumn: 'Fiscal Year Quarter Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Fiscal Month Number'
+		dataType: int64
+		isHidden
+		lineageTag: 5b402c6a-44a2-483d-b7d0-c271ffe4a9fc
+		summarizeBy: none
+		sourceColumn: Fiscal Month Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Fiscal Month'
+		dataType: string
+		isHidden
+		lineageTag: 3ed46559-e1df-435b-9344-1c944c7be849
+		summarizeBy: none
+		sourceColumn: Fiscal Month
+		sortByColumn: 'Fiscal Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Working Day'
+		dataType: string
+		lineageTag: 22abaa26-a509-44a3-b3a0-9b889829c7eb
+		summarizeBy: none
+		sourceColumn: Working Day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Is Holiday'
+		dataType: int64
+		lineageTag: 83249975-37ad-4963-ad7b-11f3ee9a99ce
+		summarizeBy: none
+		sourceColumn: Is Holiday
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Holiday Name'
+		dataType: string
+		lineageTag: 6f7c4517-54e8-4f9d-bc2c-1c766590bd63
+		summarizeBy: none
+		sourceColumn: Holiday Name
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Europe Season'
+		dataType: string
+		lineageTag: 05b28dc7-7772-495f-9093-76b6a6af65f1
+		summarizeBy: none
+		sourceColumn: Europe Season
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'North America Season'
+		dataType: string
+		lineageTag: 809f48af-85f2-4926-b8f6-297e7bfb8f43
+		summarizeBy: none
+		sourceColumn: North America Season
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Asia Season'
+		dataType: string
+		lineageTag: cfd27a25-9dab-4d96-8deb-d4c5c84b2107
+		summarizeBy: none
+		sourceColumn: Asia Season
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	hierarchy Calendar
+		lineageTag: 08f59b22-b30b-43bc-b94d-6749fe6d402b
+
+		level Year
+			lineageTag: 22d7c181-3db9-4714-b04c-1ddb5f0d7059
+			column: 'Calendar Year'
+
+		level Quarter
+			lineageTag: 0d58c733-db9e-424b-b461-c41925fead30
+			column: 'Calendar Year Quarter'
+
+		level Month
+			lineageTag: 3316ac86-10df-4738-bfea-16e3a42ac33a
+			column: 'Calendar Year Month'
+
+	hierarchy Fiscal
+		lineageTag: de0c7037-3f3a-4cf3-a902-43d5c2d8e4f1
+
+		level Year
+			lineageTag: a3c3c79d-78ad-4939-9e26-9ff4f30cd5cc
+			column: 'Fiscal Year'
+
+		level Quarter
+			lineageTag: 8fb7ecfb-9fa1-4c17-b5c6-54af3b6cb2b2
+			column: 'Fiscal Year Quarter'
+
+		level Month
+			lineageTag: 053f3ad1-bc3e-4dbb-890f-b5a3b6bbee75
+			column: 'Fiscal Month'
+
+	partition 'DaxBook Date' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("Demo", "ContosoRetailDW"),
+				    DaxBook_Date = Source{[Schema="DaxBook",Item="Date"]}[Data]
+				in
+				    DaxBook_Date
+
+		annotation IsQueryEditorUsed = False
+
+		annotation QueryEditorSerialization
+
+		annotation TableWidgetSerialization
+
+	annotation _TM_ExtProp_QueryDefinition = SELECT * FROM [Date]
+
+	annotation _TM_ExtProp_DbTableName = 290
+
+	annotation IsQueryEditorUsed = False
+
+	annotation QueryEditorSerialization
+
+	annotation TableWidgetSerialization
+
+	annotation DataMarketWebBaseUrl
+
+	annotation DataMarketWebQueryUrl
+
+	annotation PBI_ResultType = Table
+

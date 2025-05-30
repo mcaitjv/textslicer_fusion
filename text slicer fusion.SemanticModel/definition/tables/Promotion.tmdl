@@ -1,0 +1,113 @@
+table Promotion
+	lineageTag: 460ab7a5-756d-49b2-90b3-f014ea212516
+
+	column PromotionKey
+		dataType: int64
+		isNullable: false
+		lineageTag: e71f162e-c73f-42f8-9431-ce9e1dcb2c99
+		summarizeBy: none
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Promotion Code'
+		dataType: string
+		lineageTag: 52453c46-d918-4696-ad51-848a5f19ff0d
+		summarizeBy: none
+		sourceColumn: Promotion Code
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Promotion
+		dataType: string
+		lineageTag: 8d4fd927-3a23-4910-9562-b6a80c1bc651
+		summarizeBy: none
+		sourceColumn: Promotion
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Discount
+		dataType: double
+		lineageTag: 323e0939-1385-4c4c-a4a1-f29beeafa315
+		summarizeBy: none
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Promotion Type'
+		dataType: string
+		lineageTag: 381c67b0-501e-4ddc-9d18-3f686ddc9887
+		summarizeBy: none
+		sourceColumn: Promotion Type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Promotion Category'
+		dataType: string
+		lineageTag: 972ccc84-367c-4937-903c-35c6332619a8
+		summarizeBy: none
+		sourceColumn: Promotion Category
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 262bda7e-2843-4329-b13b-a56e50b6f3ac
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 84850135-0bf1-4e63-abc5-4dfbda713812
+		summarizeBy: none
+		sourceColumn: End Date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'DaxBook Promotion' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("Demo", "ContosoRetailDW"),
+				    DaxBook_Promotion = Source{[Schema="DaxBook",Item="Promotion"]}[Data]
+				in
+				    DaxBook_Promotion
+
+		annotation IsQueryEditorUsed = False
+
+		annotation QueryEditorSerialization
+
+		annotation TableWidgetSerialization
+
+	annotation _TM_ExtProp_QueryDefinition = SELECT * FROM [Promotion]
+
+	annotation _TM_ExtProp_DbTableName = 814
+
+	annotation IsQueryEditorUsed = False
+
+	annotation QueryEditorSerialization
+
+	annotation TableWidgetSerialization
+
+	annotation DataMarketWebBaseUrl
+
+	annotation DataMarketWebQueryUrl
+
+	annotation PBI_ResultType = Table
+

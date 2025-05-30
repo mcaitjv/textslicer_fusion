@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "text slicer fusion"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "09db0063-e933-498d-8d29-02281d1daed5"
+  }
+}

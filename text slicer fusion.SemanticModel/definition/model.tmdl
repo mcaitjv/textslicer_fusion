@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: it-IT
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBIDesktopVersion = 2.142.1277.0 (25.04)+014fde450f93691fc9537f0758d73d1c5df153ef
+
+annotation PBI_QueryOrder = ["Currency","Customer","Date","Product","Product Category","Product Subcategory","Promotion","Sales","Store"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Currency
+ref table Customer
+ref table Date
+ref table Product
+ref table 'Product Category'
+ref table 'Product Subcategory'
+ref table Promotion
+ref table Sales
+ref table Store
+ref table _Measures
+
+ref cultureInfo en-US
+

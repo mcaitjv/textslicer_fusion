@@ -1,0 +1,502 @@
+table Sales
+	lineageTag: bc0aadd0-2bfa-4c01-8fcc-aace2ec4a90b
+
+	measure 'Sales Amount' = SUMX ( Sales, Sales[Quantity] * Sales[Net Price] )
+		formatString: #,0.00
+		lineageTag: 003be580-a098-480e-bfa0-3475cc95bc72
+
+	measure 'Total Cost' = SUMX ( Sales, Sales[Quantity] * Sales[Unit Cost] )
+		formatString: #,0.00
+		lineageTag: abf36e8c-b73a-4a05-b8ca-d7234c92b20b
+
+	measure Margin = [Sales Amount] - [Total Cost]
+		formatString: #,0.00
+		lineageTag: 0b887242-4726-4687-b136-bbaa7d64183f
+
+	measure 'Margin %' = DIVIDE ( [Margin], [Sales Amount] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3f1b619a-7e93-4d15-ba16-b6582cba985f
+
+	measure 'Big Sales Amount (slow)' = ```
+			
+			CALCULATE (
+			    [Sales Amount],
+			    FILTER ( 
+			        Sales,
+			        Sales[Quantity] * Sales[Net Price] > 1000
+			    )
+			)
+			```
+		formatString: #,0.00
+		lineageTag: c3650a64-8f62-4e0a-a0bc-c637eb7e6d87
+
+	measure 'Big Sales Amount (fast)' = ```
+			
+			CALCULATE (
+			    [Sales Amount],
+			    KEEPFILTERS (
+			        FILTER ( 
+			            ALL ( Sales[Quantity], Sales[Net Price] ),
+			            Sales[Quantity] * Sales[Net Price] > 1000
+			        )
+			    )
+			)
+			```
+		lineageTag: 0886ec2b-a828-4c19-863c-df31d0d4ec42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cashback (slow)' =
+			
+			SUMX (
+			    Customer,
+			    [Sales Amount] * Customer[Cashback %]
+			)
+		formatString: #,0.00
+		lineageTag: a29bfcbf-836d-4259-9548-d44eee10df49
+
+	measure 'Cashback (fast)' =
+			
+			SUMX (
+			    VALUES ( Customer[Cashback %] ),
+			    [Sales Amount] * Customer[Cashback %]
+			)
+		formatString: #,0.00
+		lineageTag: 250243bf-0745-4166-85a3-7e9cd5f10b39
+
+	measure 'Discounted Sales (slow)' = ```
+			
+			SUMX (
+			    Sales,
+			    Sales[Quantity] * Sales[Net Price] 
+			        * IF ( Sales[Quantity] >= 3, .9, 1 )
+			)
+			```
+		formatString: #,0.00
+		lineageTag: 2b0634bb-534a-4b57-ab42-1da1c0927580
+
+	measure 'Discounted Sales (fast)' = ```
+			
+			CALCULATE (
+			    SUMX ( Sales, Sales[Quantity] * Sales[Net Price] ) * .9,
+			    KEEPFILTERS ( Sales[Quantity] >= 3 )
+			)
+			+
+			CALCULATE (
+			    SUMX ( Sales, Sales[Quantity] * Sales[Net Price] ),
+			    KEEPFILTERS ( NOT ( Sales[Quantity] >= 3 ) )
+			)
+			
+			```
+		formatString: #,0.00
+		lineageTag: 05f89214-c401-4c47-a56c-eeba36f51829
+
+	measure 'Fam. Sales (slow)' =
+			
+			VAR ChildrenAtHome = SELECTEDVALUE ( Customer[Children At Home] )
+			VAR Result = IF ( ChildrenAtHome > 0, [Sales Amount] )
+			RETURN Result
+		lineageTag: 127015df-787c-43d1-86ea-7069cf6310ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Fam. Sales (fast)' =
+			
+			CALCULATE (
+			    [Sales Amount],
+			    Customer[Children At Home] > 0
+			)
+		lineageTag: 6c5a20a4-de6d-4e05-b154-4ffddce6b06b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Price (slow)' =
+			
+			VAR Quantity = SUM ( Sales[Quantity] )
+			VAR SalesAmount = [Sales Amount]
+			VAR Result = IF ( Quantity <> 0, SalesAmount / Quantity )
+			RETURN SalesAmount
+		lineageTag: 48cd6cc9-4c67-49a5-81c6-201e6cd604e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Price (fast)' =
+			
+			VAR Quantity = SUM ( Sales[Quantity] )
+			VAR SalesAmount = [Sales Amount]
+			VAR Result = DIVIDE ( SalesAmount, Quantity )
+			RETURN SalesAmount
+		lineageTag: 8358297b-ed03-4152-8833-39a9a4aa4508
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rounded Sales (slow)' = ```
+			
+			SUMX ( 
+			    Sales, 
+			    Sales[Quantity] * ROUND ( Sales[Net Price], 0 ) 
+			)
+			```
+		lineageTag: fd605062-adc3-4698-88c0-96a5902201e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rounded Sales (fast)' = ```
+			
+			SUMX ( 
+			    VALUES ( Sales[Net Price] ),
+			    CALCULATE ( SUM ( Sales[Quantity] ) ) * ROUND ( Sales[Net Price], 0 ) 
+			)
+			```
+		lineageTag: 8b389670-5e82-4783-afe0-9120366e6bc8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cashback Sim. (slow)' =
+			
+			SUMX (
+			    Customer,
+			    SUMX (
+			        'Product',
+			        SUMX (
+			            RELATEDTABLE ( Sales ),
+			            Sales[Quantity] * 'Product'[Unit Price] * Customer[Cashback %]
+			        )
+			    )
+			)
+		formatString: #,0.00
+		lineageTag: e4043dce-d364-49be-8583-85b4bd92592d
+
+	measure 'Cashback Sim. (medium)' = ```
+			
+			SUMX (
+			    VALUES ( Customer[Cashback %] ),
+			    SUMX (
+			        VALUES ( 'Product'[Unit Price] ),
+			        SUMX (
+			            RELATEDTABLE ( Sales ),
+			            Sales[Quantity] * 'Product'[Unit Price] * Customer[Cashback %] 
+			        ) 
+			    )
+			)
+			```
+		formatString: #,0.00
+		lineageTag: 9c73e4d0-2f1a-496e-9fdd-88d683694f18
+
+	measure 'Cashback Sim. (fast)' =
+			
+			SUMX (
+			    Sales,
+			    Sales[Quantity] * RELATED ( 'Product'[Unit Price] ) * RELATED ( Customer[Cashback %] )
+			)
+		formatString: #,0.00
+		lineageTag: cbf924f2-6563-4c6a-8947-2c90f3969ea1
+
+	measure 'Cashback Sim. (improved)' =
+			
+			SUMX (
+			    SUMMARIZE (
+			        Sales,
+			        'Product'[Unit Price],
+			        Customer[Cashback %]
+			    ),
+			    CALCULATE (
+			        SUM ( Sales[Quantity] )
+			    ) * 'Product'[Unit Price] * Customer[Cashback %]
+			)
+		formatString: #,0.00
+		lineageTag: 3dbc4600-a8a6-4b49-b033-dca1d993fc53
+
+	measure 'Customers 1k (slow)' = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Sales[CustomerKey] ),
+			    FILTER ( 
+			        Sales,
+			        Sales[Quantity] * Sales[Net Price] > 1000
+			    )
+			)
+			```
+		formatString: #,0
+		lineageTag: dd4c0a04-efcd-4a7f-90c9-712165b1994c
+
+	measure 'Customers 1k (fast)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Sales[CustomerKey] ),
+			    KEEPFILTERS (
+			        FILTER (
+			            ALL (
+			                Sales[Quantity],
+			                Sales[Net Price]
+			            ),
+			            Sales[Quantity] * Sales[Net Price] > 1000
+			        )
+			    )
+			)
+		formatString: #,0
+		lineageTag: 23d3d8e6-0513-4291-9757-2d8d63ec63e8
+
+	measure 'Sales PY' = ```
+			
+			CALCULATE ( 
+			    [Sales Amount],
+			    SAMEPERIODLASTYEAR ( 'Date'[Date] ) 
+			)
+			```
+		formatString: #,0.00
+		lineageTag: 14894cb6-0e62-46c0-b8d3-206f4c202d69
+
+	measure 'Sales YOY (slow)' = ```
+			
+			IF ( 
+			    NOT ISBLANK ( [Sales Amount] ) && NOT ISBLANK ( [Sales PY] ),
+			    [Sales Amount] - [Sales PY]
+			)
+			```
+		formatString: #,0.00
+		lineageTag: 1a458a3e-385b-4402-9882-570fbefea2cb
+
+	measure 'Sales YOY % (slow)' =
+			
+			DIVIDE ( [Sales YOY (slow)], [Sales PY] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ab2cf95f-7679-49f1-b42b-55cd773ce924
+
+	measure 'Sales YOY (fast)' = ```
+			
+			VAR SalesPY = [Sales PY]
+			VAR SalesAmount = [Sales Amount]
+			RETURN
+			IF ( 
+			    NOT ISBLANK ( SalesAmount ) && NOT ISBLANK ( SalesPY ),
+			    SalesAmount - SalesPY
+			)
+			```
+		formatString: #,0.00
+		lineageTag: 386ed0f6-17d2-4508-b449-52e06542e510
+
+	measure 'Sales YOY % (fast)' =
+			
+			DIVIDE ( [Sales YOY (fast)], [Sales PY] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ccf9e9fe-501f-477e-803a-5f0fa0c0ede4
+
+	column OnlineSalesKey
+		dataType: int64
+		lineageTag: 81aae120-5d86-4bad-bf03-49a8eb1ae3cc
+		summarizeBy: none
+		sourceColumn: OnlineSalesKey
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column StoreKey
+		dataType: int64
+		lineageTag: cc2c3d62-b9ca-49fe-b1fb-8874d0adb1ea
+		summarizeBy: none
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductKey
+		dataType: int64
+		lineageTag: a9928f2d-be0d-4eea-ab39-11635349bbda
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PromotionKey
+		dataType: int64
+		lineageTag: 8f7c5f93-e424-413d-a554-04d4ab546b58
+		summarizeBy: none
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrencyKey
+		dataType: int64
+		lineageTag: 2186f947-3324-4572-9b99-74b2c7714ce9
+		summarizeBy: none
+		sourceColumn: CurrencyKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CustomerKey
+		dataType: int64
+		lineageTag: b491a305-6a20-4c51-b962-342ebb5300ee
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderDateKey
+		dataType: int64
+		lineageTag: 319284bf-c5d4-4ce2-8f4d-822280a580b4
+		summarizeBy: none
+		sourceColumn: OrderDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DueDateKey
+		dataType: int64
+		lineageTag: 4656db28-7720-4273-975f-990dfad471bc
+		summarizeBy: none
+		sourceColumn: DueDateKey
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DeliveryDateKey
+		dataType: int64
+		lineageTag: 8d873a30-dda0-4fc1-9106-788ae97e2fb1
+		summarizeBy: none
+		sourceColumn: DeliveryDateKey
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d8cce10d-007f-4829-a705-23fe9ba33ec6
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Due Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 23c3d408-ed7e-49c1-a7bb-ebc093e2ba63
+		summarizeBy: none
+		sourceColumn: Due Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fdc00dcf-fcf4-4a16-a88a-48696d0d7c1f
+		summarizeBy: none
+		sourceColumn: Delivery Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: d90b05a4-01c1-4718-b57f-8265b2a3b6e9
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Order Line Number'
+		dataType: int64
+		lineageTag: 2630efb2-ef62-4ac2-9071-da2ce7fde756
+		summarizeBy: none
+		sourceColumn: Order Line Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		lineageTag: a6aed1af-c6d3-49ba-9020-35b9036ebded
+		summarizeBy: none
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Price'
+		dataType: double
+		lineageTag: 63fc8946-9f71-4df8-bfee-85954cd91540
+		summarizeBy: none
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Discount'
+		dataType: double
+		lineageTag: 27870688-f186-478f-82bb-536fe16d2466
+		summarizeBy: none
+		sourceColumn: Unit Discount
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Cost'
+		dataType: double
+		lineageTag: 3a018d08-6fc8-4cc8-a2cc-49de97f7a6a8
+		summarizeBy: none
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net Price'
+		dataType: double
+		lineageTag: e33d1307-185e-40f7-b522-5dc231d9e590
+		summarizeBy: none
+		sourceColumn: Net Price
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'DaxBook Sales' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("Demo", "ContosoRetailDW"),
+				    DaxBook_Sales = Source{[Schema="DaxBook",Item="Sales"]}[Data]
+				in
+				    DaxBook_Sales
+
+		annotation IsQueryEditorUsed = False
+
+		annotation QueryEditorSerialization
+
+		annotation TableWidgetSerialization
+
+	annotation _TM_ExtProp_QueryDefinition = SELECT * FROM [Sales]
+
+	annotation _TM_ExtProp_DbTableName = 905
+
+	annotation IsQueryEditorUsed = False
+
+	annotation QueryEditorSerialization
+
+	annotation TableWidgetSerialization
+
+	annotation DataMarketWebBaseUrl
+
+	annotation DataMarketWebQueryUrl
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.7.0/schema.json",
+  "name": "2f8fe372c131e75ecd5f",
+  "position": {
+    "x": 1119.748031496063,
+    "y": 0,
+    "z": 4000,
+    "height": 694.42519685039372,
+    "width": 151.18110236220471,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Store"
+                    }
+                  },
+                  "Property": "Country"
+                }
+              },
+              "queryRef": "Store.Country",
+              "nativeQueryRef": "Country"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Store"
+                  }
+                },
+                "Property": "Country"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    }
+  }
+}

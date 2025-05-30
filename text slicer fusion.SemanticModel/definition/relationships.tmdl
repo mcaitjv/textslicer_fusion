@@ -1,0 +1,32 @@
+relationship ab1aeb10-6713-4f0f-9473-659c672a8d57
+	fromColumn: Sales.ProductKey
+	toColumn: Product.ProductKey
+
+relationship a6597a69-f336-46f0-92c1-1b4e4b5da1be
+	fromColumn: Sales.CustomerKey
+	toColumn: Customer.CustomerKey
+
+relationship d04a4664-b771-4a24-b523-b1ec9d1db54a
+	fromColumn: Product.ProductSubcategoryKey
+	toColumn: 'Product Subcategory'.ProductSubcategoryKey
+
+relationship 4d12cdbe-2706-459e-9581-18599f31ef35
+	fromColumn: 'Product Subcategory'.ProductCategoryKey
+	toColumn: 'Product Category'.ProductCategoryKey
+
+relationship 82e366d6-93db-4102-98c1-a3c1d1bcd8bb
+	fromColumn: Sales.PromotionKey
+	toColumn: Promotion.PromotionKey
+
+relationship 9b15e4cb-1b76-41fe-a25b-a71823fb4ad1
+	fromColumn: Sales.StoreKey
+	toColumn: Store.StoreKey
+
+relationship 9ce5317f-f1ca-4fe2-b8ee-783b3b45e387
+	fromColumn: Sales.OrderDateKey
+	toColumn: Date.DateKey
+
+relationship db0e6221-7cde-48fd-8078-d0d119fdd5fb
+	fromColumn: Sales.CurrencyKey
+	toColumn: Currency.CurrencyKey
+
